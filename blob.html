@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stanford Happy Club :)</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap');
+
+    :root {
+      --yellow: #FFD93D;
+      --orange: #FF6B35;
+      --pink:   #FF6B9D;
+      --mint:   #6BCFB0;
+      --sky:    #74C0FC;
+      --purple: #C77DFF;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: #fff8f5;
+      color: #1e1e1e;
+      overflow-x: hidden;
+    }
+
+    /* ═══════════════════════════════════════
+       FIXED BLOB BACKGROUND
+    ═══════════════════════════════════════ */
+    .blobs {
+      position: fixed;
+      inset: 0;
+      filter: blur(70px) saturate(1.7);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      mix-blend-mode: multiply;
+      opacity: 0.48;
+    }
+
+    .b1 { width:55vw; height:55vw; background:radial-gradient(circle,#ff6b9d,#ff3870); top:-15%; left:-10%; animation:drift1 7s ease-in-out infinite, morph1 5s ease-in-out infinite; }
+    .b2 { width:45vw; height:45vw; background:radial-gradient(circle,#FFD93D,#ff9f1c); top:40%; left:55%;  animation:drift2 9s ease-in-out infinite, morph2 4s ease-in-out infinite; }
+    .b3 { width:50vw; height:50vw; background:radial-gradient(circle,#74C0FC,#4a90e2); bottom:-10%; left:20%; animation:drift3 8s ease-in-out infinite, morph3 6s ease-in-out infinite; }
+    .b4 { width:38vw; height:38vw; background:radial-gradient(circle,#6BCFB0,#00c9a7); top:20%; right:-5%;  animation:drift4 10s ease-in-out infinite, morph4 4s ease-in-out infinite; }
+    .b5 { width:32vw; height:32vw; background:radial-gradient(circle,#C77DFF,#9b5de5); bottom:15%; right:10%; animation:drift5 6s ease-in-out infinite, morph5 5s ease-in-out infinite; }
+    .b6 { width:28vw; height:28vw; background:radial-gradient(circle,#ff9a3c,#ff6b35); top:55%; left:5%;    animation:drift6 8s ease-in-out infinite, morph1 4s ease-in-out infinite; }
+
+    @keyframes morph1 {
+      0%,100% { border-radius:60% 40% 30% 70% / 60% 30% 70% 40%; }
+      25%      { border-radius:30% 60% 70% 40% / 50% 60% 30% 60%; }
+      50%      { border-radius:50% 60% 30% 60% / 30% 40% 70% 50%; }
+      75%      { border-radius:40% 50% 60% 30% / 70% 30% 50% 60%; }
+    }
+    @keyframes morph2 {
+      0%,100% { border-radius:40% 60% 60% 40% / 70% 30% 60% 40%; }
+      33%      { border-radius:60% 40% 40% 60% / 40% 60% 40% 60%; }
+      66%      { border-radius:50% 50% 30% 70% / 60% 50% 40% 50%; }
+    }
+    @keyframes morph3 {
+      0%,100% { border-radius:70% 30% 50% 50% / 40% 60% 50% 60%; }
+      50%      { border-radius:30% 70% 40% 60% / 60% 40% 70% 30%; }
+    }
+    @keyframes morph4 {
+      0%,100% { border-radius:50% 50% 40% 60% / 60% 40% 50% 50%; }
+      40%      { border-radius:60% 40% 60% 40% / 40% 60% 30% 70%; }
+      80%      { border-radius:30% 70% 50% 50% / 50% 50% 60% 40%; }
+    }
+    @keyframes morph5 {
+      0%,100% { border-radius:60% 40% 70% 30% / 50% 60% 40% 50%; }
+      50%      { border-radius:40% 60% 30% 70% / 60% 40% 60% 40%; }
+    }
+
+    @keyframes drift1 { 0%,100%{transform:translate(0,0) scale(1)} 30%{transform:translate(8vw,5vh) scale(1.06)} 60%{transform:translate(4vw,12vh) scale(0.95)} }
+    @keyframes drift2 { 0%,100%{transform:translate(0,0) scale(1)} 40%{transform:translate(-10vw,-8vh) scale(1.08)} 70%{transform:translate(-5vw,6vh) scale(0.94)} }
+    @keyframes drift3 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(6vw,-10vh) scale(1.05)} }
+    @keyframes drift4 { 0%,100%{transform:translate(0,0) scale(1)} 35%{transform:translate(-8vw,10vh) scale(1.1)} 75%{transform:translate(-3vw,-5vh) scale(0.92)} }
+    @keyframes drift5 { 0%,100%{transform:translate(0,0) scale(1)} 45%{transform:translate(5vw,-8vh) scale(1.07)} }
+    @keyframes drift6 { 0%,100%{transform:translate(0,0) scale(1)} 60%{transform:translate(10vw,-6vh) scale(1.04)} }
+
+    /* Noise + vignette */
+    .noise {
+      position: fixed; inset: 0; z-index: 1; opacity: 0.035; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 200px;
+    }
+    .vignette {
+      position: fixed; inset: 0; z-index: 2; pointer-events: none;
+      background:
+        linear-gradient(to bottom, rgba(255,255,255,0.35) 0%, transparent 30%),
+        radial-gradient(ellipse at center, transparent 40%, rgba(255,240,230,0.3) 100%);
+    }
+
+    /* Cursor blob */
+    .cursor-blob {
+      position: fixed; width: 340px; height: 340px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,0.5), transparent 70%);
+      pointer-events: none; z-index: 5;
+      transform: translate(-50%,-50%);
+      mix-blend-mode: overlay;
+    }
+
+    /* ═══════════════════════════════════════
+       LAYOUT
+    ═══════════════════════════════════════ */
+    .page { position: relative; z-index: 10; }
+
+    section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 6rem 2rem;
+    }
+
+    /* Glass card — base panel */
+    .glass {
+      background: rgba(255,255,255,0.72);
+      backdrop-filter: blur(30px);
+      -webkit-backdrop-filter: blur(30px);
+      border: 1px solid rgba(255,255,255,0.85);
+      border-radius: 28px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.08);
+    }
+
+    /* Default: white text for sections sitting on the blob background */
+    .section-label {
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.85);
+      text-shadow: 0 1px 4px rgba(0,0,0,0.1);
+      margin-bottom: 0.6rem;
+    }
+
+    h2 {
+      font-family: 'Fredoka One', cursive;
+      font-size: clamp(2.2rem, 5vw, 3.4rem);
+      color: white;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.1);
+      line-height: 1.05;
+      margin-bottom: 1.4rem;
+    }
+
+    p { font-size: 1.05rem; line-height: 1.8; color: rgba(255,255,255,0.85); max-width: 720px; text-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+
+    /* Glass card overrides — dark text on white surface */
+    .glass .section-label { color: var(--orange); text-shadow: none; }
+    .glass h2  { color: #1e1e1e; text-shadow: none; font-size: clamp(1.6rem, 3vw, 2.2rem); }
+    .glass p   { color: #555; text-shadow: none; }
+    .glass .quote-block { color: #444; }
+
+    /* ═══════════════════════════════════════
+       HERO
+    ═══════════════════════════════════════ */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+      padding-top: 10rem;
+      position: relative;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.7);
+      text-shadow: 0 1px 4px rgba(0,0,0,0.15);
+      margin-bottom: 1.4rem;
+      animation: fadeUp 1s ease both 0.2s;
+    }
+
+    .hero-title {
+      font-family: 'Fredoka One', cursive;
+      font-size: clamp(5rem, 14vw, 11rem);
+      line-height: 0.95;
+      color: white;
+      text-shadow: 0 2px 16px rgba(0,0,0,0.12);
+      animation: fadeUp 1s ease both 0.4s;
+    }
+
+    .hero-title .smiley {
+      display: inline-block;
+      color: var(--yellow);
+      animation: wiggle 2.5s ease-in-out infinite, glow 3s ease-in-out infinite;
+    }
+
+    @keyframes wiggle {
+      0%,100% { transform: rotate(-4deg) scale(1); }
+      50%      { transform: rotate(4deg) scale(1.05); }
+    }
+    @keyframes glow {
+      0%,100% { text-shadow: 0 0 40px rgba(255,217,61,0.4); }
+      50%      { text-shadow: 0 0 80px rgba(255,217,61,0.8), 0 0 120px rgba(255,107,53,0.4); }
+    }
+
+    .hero-tagline {
+      margin-top: 2.4rem;
+      font-size: clamp(1rem, 2.4vw, 1.3rem);
+      font-weight: 700;
+      color: rgba(255,255,255,0.9);
+      text-shadow: 0 1px 6px rgba(0,0,0,0.15);
+      animation: fadeUp 1s ease both 0.6s;
+    }
+
+    .hero-pills {
+      display: flex; gap: 0.7rem; flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 2rem;
+      animation: fadeUp 1s ease both 0.8s;
+    }
+
+    .pill {
+      background: rgba(255,255,255,0.55);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255,255,255,0.85);
+      border-radius: 50px;
+      padding: 0.45rem 1.1rem;
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: #1e1e1e;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+    }
+
+    .hero-cta {
+      margin-top: 3rem;
+      padding: 0.9rem 2.4rem;
+      background: var(--orange);
+      color: white;
+      font-family: 'Fredoka One', cursive;
+      font-size: 1.2rem;
+      border-radius: 50px;
+      text-decoration: none;
+      box-shadow: 0 0 40px rgba(255,217,61,0.3), 0 8px 24px rgba(0,0,0,0.3);
+      transition: transform 0.2s, box-shadow 0.2s;
+      animation: fadeUp 1s ease both 1s;
+    }
+    .hero-cta:hover {
+      transform: translateY(-4px) scale(1.04);
+      box-shadow: 0 0 60px rgba(255,217,61,0.5), 0 16px 40px rgba(0,0,0,0.35);
+    }
+
+    /* Hero photo */
+    .hero-photo-wrap {
+      margin-top: 4rem;
+      animation: fadeUp 1s ease both 1.1s;
+    }
+    .hero-photo-wrap img {
+      width: min(1400px, 98vw);
+      height: 780px;
+      object-fit: cover;
+      object-position: center 40%;
+      border-radius: 24px;
+      display: block;
+      border: 1px solid rgba(255,255,255,0.15);
+      box-shadow:
+        0 30px 80px rgba(0,0,0,0.5),
+        0 0 60px rgba(255,107,157,0.15),
+        0 0 80px rgba(116,192,252,0.1);
+    }
+
+    /* ═══════════════════════════════════════
+       ABOUT
+    ═══════════════════════════════════════ */
+    .motivation {
+      padding: 3.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .motivation::after {
+      content: '🌱';
+      position: absolute;
+      font-size: 10rem;
+      right: 1rem; top: 1rem;
+      opacity: 0.06;
+      transform: rotate(20deg);
+      pointer-events: none;
+    }
+
+    .quote-block {
+      border-left: 4px solid var(--yellow);
+      background: rgba(255,217,61,0.08);
+      border-radius: 0 14px 14px 0;
+      padding: 1.1rem 1.4rem;
+      margin: 1.4rem 0;
+      font-size: 1.08rem;
+      font-weight: 700;
+      color: #444;
+      font-style: italic;
+    }
+
+    /* ═══════════════════════════════════════
+       ACTIVITIES
+    ═══════════════════════════════════════ */
+    .activity-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .activity-card {
+      border-radius: 20px;
+      padding: 1.6rem 1rem;
+      text-align: center;
+      background: rgba(255,255,255,0.3);
+      border: 1px solid rgba(255,255,255,0.5);
+      backdrop-filter: blur(16px);
+      transition: transform 0.2s, background 0.2s;
+      cursor: default;
+    }
+    .activity-card:hover {
+      transform: translateY(-6px);
+      background: rgba(255,255,255,0.5);
+    }
+    .activity-card .icon  { font-size: 2.4rem; margin-bottom: 0.6rem; }
+    .activity-card .label { font-weight: 800; font-size: 0.9rem; color: #1e1e1e; text-shadow: none; }
+
+    /* ═══════════════════════════════════════
+       WHEN & WHERE
+    ═══════════════════════════════════════ */
+    .info-strip {
+      display: flex; gap: 1.5rem; flex-wrap: wrap; margin-top: 2rem;
+    }
+
+    .info-card {
+      flex: 1; min-width: 220px;
+      border-radius: 20px;
+      padding: 2rem;
+      color: white;
+      font-weight: 700;
+    }
+    .info-card .info-icon { font-size: 2.4rem; margin-bottom: 0.6rem; }
+    .info-card h3 { font-family: 'Fredoka One', cursive; font-size: 1.4rem; margin-bottom: 0.3rem; color: white; }
+    .info-card p  { color: #444; font-size: 0.95rem; max-width: none; }
+    .info-card.time  { background: linear-gradient(135deg, var(--orange), var(--pink)); }
+    .info-card.place { background: linear-gradient(135deg, var(--sky),    var(--purple)); }
+    .info-card.cost  { background: linear-gradient(135deg, var(--mint),   var(--sky)); }
+
+    /* ═══════════════════════════════════════
+       TEAM
+    ═══════════════════════════════════════ */
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+    }
+
+    .team-card {
+      border-radius: 24px;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      background: rgba(255,255,255,0.6);
+      border: 1px solid rgba(255,255,255,0.8);
+      backdrop-filter: blur(20px);
+      transition: transform 0.2s, background 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .team-card::before {
+      content: ''; position: absolute;
+      top: 0; left: 0; right: 0; height: 5px;
+    }
+    .team-card.ceo::before   { background: linear-gradient(90deg, var(--orange), var(--pink)); }
+    .team-card.cho::before   { background: linear-gradient(90deg, var(--pink),   var(--purple)); }
+    .team-card.cfo::before   { background: linear-gradient(90deg, var(--mint),   var(--sky)); }
+    .team-card.vibes::before { background: linear-gradient(90deg, var(--yellow), var(--orange)); }
+    .team-card:hover { transform: translateY(-6px); background: rgba(255,255,255,0.8); }
+
+    .team-avatar {
+      width: 90px; height: 90px;
+      border-radius: 50%;
+      margin: 0 auto 1rem;
+      object-fit: cover;
+      object-position: center center;
+      border: 3px solid rgba(255,255,255,0.2);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+      display: block;
+    }
+    .team-card.ceo   .team-avatar { border-color: rgba(255,107,53,0.5); }
+    .team-card.cho   .team-avatar { border-color: rgba(255,107,157,0.5); }
+    .team-card.cfo   .team-avatar { border-color: rgba(107,207,176,0.5); }
+    .team-card.vibes .team-avatar { border-color: rgba(255,217,61,0.5); }
+
+    .team-card.manav   .team-avatar { object-position: 35% 20%; }
+    .team-card.antoine .team-avatar { object-position: 35% 40%; }
+    .team-card.jessica .team-avatar { object-position: center 30%; }
+    /* .team-card.anushree .team-avatar { object-position: center 25%; } */
+    .team-card.antoine .team-avatar { object-position: 35% 40%; }
+    .team-card.anushree .team-avatar { object-position: 25% 43%; }
+
+
+    .team-name {
+      font-weight: 800; font-size: 1rem;
+      color: #1e1e1e; margin-bottom: 0.3rem;
+    }
+
+    .team-title {
+      font-size: 0.75rem; font-weight: 700;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      padding: 0.28rem 0.8rem;
+      border-radius: 50px;
+      display: inline-block; margin-bottom: 0.35rem;
+    }
+    .team-card.ceo   .team-title { background: #FFE5D0; color: var(--orange); }
+    .team-card.cho   .team-title { background: #FFD6EC; color: var(--pink); }
+    .team-card.cfo   .team-title { background: #D0F5EC; color: #0d9e77; }
+    .team-card.vibes .team-title { background: #FFF5CC; color: #c8970a; }
+
+    .team-full-title { font-size: 0.8rem; color: #999; font-style: italic; }
+
+    /* ═══════════════════════════════════════
+       FOOTER
+    ═══════════════════════════════════════ */
+    footer {
+      text-align: center;
+      padding: 3.5rem 2rem;
+      border-top: 1px solid rgba(255,255,255,0.2);
+      color: rgba(255,255,255,0.7);
+      font-size: 0.9rem;
+      position: relative; z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    footer strong { color: white; }
+
+    /* ═══════════════════════════════════════
+       SCROLL REVEAL
+    ═══════════════════════════════════════ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 640px) {
+      .team-grid     { grid-template-columns: repeat(2,1fr); }
+      .activity-grid { grid-template-columns: repeat(2,1fr); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- FIXED BACKGROUND -->
+  <div class="blobs">
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+    <div class="blob b3"></div>
+    <div class="blob b4"></div>
+    <div class="blob b5"></div>
+    <div class="blob b6"></div>
+  </div>
+  <div class="noise"></div>
+  <div class="vignette"></div>
+  <div class="cursor-blob" id="cursor"></div>
+
+  <!-- PAGE CONTENT -->
+  <div class="page">
+
+    <!-- HERO -->
+    <div class="hero">
+      <p class="hero-eyebrow">Stanford University</p>
+      <h1 class="hero-title">Happy Club <span class="smiley">:)</span></h1>
+      <p class="hero-tagline">Making sad students happy &amp; happy students happier</p>
+      <div class="hero-pills">
+        <span class="pill">📍 Manzanita Field</span>
+        <span class="pill">🗓 Every Friday</span>
+        <span class="pill">🕓 4 – 6 PM</span>
+        <!-- <span class="pill">🎉 Free &amp; Open</span> -->
+      </div>
+      <a class="hero-cta" href="#about">Touch some grass</a>
+      <div class="hero-photo-wrap">
+        <img src="happy_club_photo.jpeg" alt="Happy Club at Manzanita Field" />
+      </div>
+    </div>
+
+    <!-- ABOUT -->
+    <section id="about">
+      <div class="glass motivation reveal">
+        <p class="section-label">Why we exist</p>
+        <h2>Grad students deserve to touch grass</h2>
+        <div class="quote-block">
+          There's a running joke that us grad students don't touch grass enough — so we created a space where we can do exactly that, quite literally.
+        </div>
+        <p>
+          Stanford can be intense. Between coursework, research, and the relentless pace of academic life,
+          it's easy to forget that the sun still shines over Manzanita Field every Friday afternoon.
+        </p>
+        <br/>
+        <p>
+          Happy Club is a recurring outdoor gathering built for graduate students who need to decompress,
+          connect with peers across programs, and rediscover the simple joy of unstructured play.
+          No agenda. No productivity goals. Just vibes, fresh air, and probably some boba.
+        </p>
+        <br/>
+        <p>
+          Our goal is modest but meaningful: to make campus life a little warmer, a little lighter,
+          and a whole lot more fun — one Friday at a time.
+        </p>
+      </div>
+    </section>
+
+    <!-- ACTIVITIES -->
+    <section>
+      <p class="section-label reveal">What we do</p>
+      <h2 class="reveal">Just fun</h2>
+      <!-- <p class="reveal">No pressure, no agenda. Just pick your favorite thing and go for it.</p> -->
+      <div class="activity-grid">
+        <div class="activity-card reveal"><div class="icon">🏐</div><div class="label">Volleyball</div></div>
+        <div class="activity-card reveal"><div class="icon">🏀</div><div class="label">Basketball</div></div>
+        <div class="activity-card reveal"><div class="icon">🥏</div><div class="label">Frisbee</div></div>
+        <div class="activity-card reveal"><div class="icon">💦</div><div class="label">Water Gun Fights</div></div>
+        <div class="activity-card reveal"><div class="icon">🍦</div><div class="label">Ice Cream Truck</div></div>
+        <div class="activity-card reveal"><div class="icon">🌮</div><div class="label">Taco Truck</div></div>
+        <div class="activity-card reveal"><div class="icon">🧋</div><div class="label">Boba</div></div>
+        <div class="activity-card reveal"><div class="icon">🤸</div><div class="label">Bounce House</div></div>
+      </div>
+    </section>
+
+    <!-- WHEN & WHERE -->
+    <section>
+      <p class="section-label reveal">Logistics</p>
+      <h2 class="reveal">When &amp; Where</h2>
+      <div class="info-strip">
+        <div class="info-card time reveal">
+          <div class="info-icon">🕓</div>
+          <h3>Every Friday</h3>
+          <p>4:00 PM – 6:00 PM<br/>Weekly, during the academic year</p>
+        </div>
+        <div class="info-card place reveal">
+          <div class="info-icon">📍</div>
+          <h3>Manzanita Field</h3>
+          <p>Stanford University Campus<br/>Right where the grass is greenest</p>
+        </div>
+        <div class="info-card cost reveal">
+          <div class="info-icon">🎉</div>
+          <h3>Free &amp; Open</h3>
+          <p>All graduate students welcome<br/>Bring friends and joy</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TEAM -->
+    <section>
+      <p class="section-label reveal">The crew</p>
+      <h2 class="reveal">Meet the Dream Team</h2>
+      <div class="team-grid">
+
+        <div class="team-card ceo anushree reveal">
+          <img class="team-avatar" src="anushree.png" alt="Anushree Aggarwal" />
+          <div class="team-name">Anushree Aggarwal</div>
+          <div class="team-title">CEO</div>
+          <div class="team-full-title">Chief Everything Officer</div>
+        </div>
+
+        <div class="team-card cho jessica reveal">
+          <img class="team-avatar" src="jess.png" alt="Jessica Chudnovsky" />
+          <div class="team-name">Jessica Chudnovsky</div>
+          <div class="team-title">CHO</div>
+          <div class="team-full-title">Chief Happiness Officer</div>
+        </div>
+
+        <div class="team-card cfo reveal">
+          <img class="team-avatar" src="salman.png" alt="Salman Abdullah" />
+          <div class="team-name">Salman Abdullah</div>
+          <div class="team-title">CFO</div>
+          <div class="team-full-title">Chief Food Officer</div>
+        </div>
+
+        <div class="team-card vibes reveal">
+          <img class="team-avatar" src="ismail.png" alt="Ismail Mardin" />
+          <div class="team-name">Ismail Mardin</div>
+          <div class="team-title">Vibes</div>
+          <div class="team-full-title">Vibes Strategist</div>
+        </div>
+
+        <div class="team-card vibes manav reveal">
+          <img class="team-avatar" src="manav.png" alt="Manav Shah" />
+          <div class="team-name">Manav Shah</div>
+          <div class="team-title">Vibes</div>
+          <div class="team-full-title">Vibes Strategist</div>
+        </div>
+
+        <div class="team-card vibes antoine reveal">
+          <img class="team-avatar" src="antoine.png" alt="Antoine Maechler" />
+          <div class="team-name">Antoine Maechler</div>
+          <div class="team-title">Vibes</div>
+          <div class="team-full-title">Vibes Strategist</div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <p style="font-size:2rem; margin-bottom:0.5rem;">:)</p>
+      <p><strong>Stanford Happy Club</strong> · Manzanita Field · Fridays 4–6 PM</p>
+      <p style="margin-top:0.4rem;">Making sad students happy &amp; happy students happier · Est. 2026</p>
+    </footer>
+
+  </div><!-- end .page -->
+
+  <script>
+    // Cursor-following glow
+    const cursor = document.getElementById('cursor');
+    let mx = innerWidth / 2, my = innerHeight / 2, cx = mx, cy = my;
+    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+    (function animateCursor() {
+      cx += (mx - cx) * 0.08;
+      cy += (my - cy) * 0.08;
+      cursor.style.left = cx + 'px';
+      cursor.style.top  = cy + 'px';
+      requestAnimationFrame(animateCursor);
+    })();
+
+    // Mouse parallax on blobs
+    const blobs = document.querySelectorAll('.blob');
+    document.addEventListener('mousemove', e => {
+      const xf = e.clientX / innerWidth  - 0.5;
+      const yf = e.clientY / innerHeight - 0.5;
+      blobs.forEach((b, i) => {
+        const d = (i % 3 + 1) * 9;
+        b.style.transform = `translate(${xf * d}px, ${yf * d}px)`;
+      });
+    });
+
+    // Scroll reveal
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Smooth scroll CTA
+    document.querySelector('.hero-cta').addEventListener('click', e => {
+      e.preventDefault();
+      document.querySelector('#about').scrollIntoView({ behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>

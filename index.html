@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stanford Happy Club :)</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap');
+
+    :root {
+      --yellow: #FFD93D;
+      --orange: #FF6B35;
+      --pink: #FF6B9D;
+      --mint: #6BCFB0;
+      --sky: #74C0FC;
+      --purple: #C77DFF;
+      --cream: #FFF9F0;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--cream);
+      overflow-x: hidden;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      background: url('happy_club_photo.jpeg') center center / cover no-repeat;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* no overlay — photo is shown pure */
+    .hero::before { display: none; }
+
+    .floating-emoji {
+      position: absolute;
+      font-size: 2.5rem;
+      animation: float 6s ease-in-out infinite;
+      pointer-events: none;
+      user-select: none;
+    }
+    .floating-emoji:nth-child(1)  { top: 8%;  left: 5%;  animation-delay: 0s;   font-size: 3rem; }
+    .floating-emoji:nth-child(2)  { top: 15%; right: 8%; animation-delay: 1s;   font-size: 2rem; }
+    .floating-emoji:nth-child(3)  { top: 70%; left: 3%;  animation-delay: 2s;   font-size: 2.5rem; }
+    .floating-emoji:nth-child(4)  { top: 80%; right: 5%; animation-delay: 0.5s; font-size: 3rem; }
+    .floating-emoji:nth-child(5)  { top: 40%; left: 1%;  animation-delay: 3s;   font-size: 2rem; }
+    .floating-emoji:nth-child(6)  { top: 55%; right: 2%; animation-delay: 1.5s; font-size: 2.5rem; }
+    .floating-emoji:nth-child(7)  { top: 25%; left: 12%; animation-delay: 2.5s; font-size: 1.8rem; }
+    .floating-emoji:nth-child(8)  { top: 60%; right: 12%;animation-delay: 4s;   font-size: 2rem; }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50%       { transform: translateY(-20px) rotate(10deg); }
+    }
+
+    /* ── STICKER TITLE CARD ── */
+    .hero-sticker {
+      background: white;
+      border-radius: 22px;
+      padding: 1rem 3rem 1.3rem;
+      transform: rotate(-1.8deg);
+      box-shadow:
+        5px 5px 0 rgba(0,0,0,0.07),
+        0 24px 64px rgba(0,0,0,0.22);
+      position: relative;
+      z-index: 2;
+      margin-bottom: 1.4rem;
+    }
+
+    .hero-sticker h1 {
+      font-family: 'Fredoka One', cursive;
+      font-size: clamp(3.5rem, 10vw, 8rem);
+      color: #1e1e1e;
+      line-height: 1;
+      text-shadow: none;
+    }
+
+    .hero-sticker h1 span {
+      display: inline-block;
+      animation: wiggle 2s ease-in-out infinite;
+      color: var(--orange);
+    }
+
+    @keyframes wiggle {
+      0%, 100% { transform: rotate(-3deg); }
+      50%       { transform: rotate(3deg); }
+    }
+
+    /* ── FROSTED GLASS TAGLINE ── */
+    .hero-glass {
+      background: rgba(255,255,255,0.22);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1.5px solid rgba(255,255,255,0.45);
+      border-radius: 50px;
+      padding: 0.65rem 1.8rem;
+      margin-bottom: 0.7rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-sub {
+      font-size: clamp(0.95rem, 2.2vw, 1.25rem);
+      color: white;
+      font-weight: 700;
+      text-shadow: 0 1px 6px rgba(0,0,0,0.4);
+      margin: 0;
+    }
+
+    .hero-detail {
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.92);
+      font-weight: 700;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+      letter-spacing: 0.02em;
+      position: relative;
+      z-index: 2;
+    }
+
+    .cta-btn {
+      margin-top: 1.6rem;
+      padding: 0.9rem 2.2rem;
+      background: white;
+      color: var(--orange);
+      font-family: 'Fredoka One', cursive;
+      font-size: 1.25rem;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+      transition: transform 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      display: inline-block;
+      position: relative;
+      z-index: 2;
+    }
+    .cta-btn:hover {
+      transform: translateY(-4px) scale(1.05);
+      box-shadow: 0 14px 40px rgba(0,0,0,0.25);
+    }
+
+    /* ── SECTION WRAPPER ── */
+    section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 5rem 2rem;
+    }
+
+    .section-label {
+      font-size: 0.85rem;
+      font-weight: 800;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 0.5rem;
+    }
+
+    h2 {
+      font-family: 'Fredoka One', cursive;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      color: #2d2d2d;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+    }
+
+    p {
+      font-size: 1.05rem;
+      color: #555;
+      line-height: 1.8;
+      max-width: 720px;
+    }
+
+    /* ── MOTIVATION ── */
+    .motivation {
+      background: white;
+      border-radius: 32px;
+      padding: 3.5rem;
+      box-shadow: 0 4px 40px rgba(0,0,0,0.07);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .motivation::before {
+      content: '🌱';
+      position: absolute;
+      font-size: 10rem;
+      right: -1rem;
+      top: -1rem;
+      opacity: 0.07;
+      transform: rotate(20deg);
+    }
+
+    .quote-block {
+      border-left: 5px solid var(--yellow);
+      background: #FFF9E6;
+      border-radius: 0 16px 16px 0;
+      padding: 1.2rem 1.5rem;
+      margin: 1.5rem 0;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #555;
+      font-style: italic;
+    }
+
+
+    /* ── ACTIVITIES ── */
+    .activities-bg {
+      background: linear-gradient(135deg, #fff8f0, #fff0f8);
+    }
+
+    .activity-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .activity-card {
+      background: white;
+      border-radius: 20px;
+      padding: 1.5rem 1rem;
+      text-align: center;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .activity-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+    }
+    .activity-card .icon { font-size: 2.5rem; margin-bottom: 0.6rem; }
+    .activity-card .label {
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: #444;
+    }
+
+    /* ── WHEN & WHERE ── */
+    .info-strip {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+
+    .info-card {
+      flex: 1;
+      min-width: 220px;
+      border-radius: 20px;
+      padding: 2rem;
+      color: white;
+      font-weight: 700;
+    }
+    .info-card .info-icon { font-size: 2.5rem; margin-bottom: 0.7rem; }
+    .info-card h3 { font-family: 'Fredoka One', cursive; font-size: 1.4rem; margin-bottom: 0.3rem; }
+    .info-card p { color: rgba(255,255,255,0.9); font-size: 0.95rem; max-width: none; }
+    .info-card.time  { background: linear-gradient(135deg, var(--orange), var(--pink)); }
+    .info-card.place { background: linear-gradient(135deg, var(--sky), var(--purple)); }
+    .info-card.cost  { background: linear-gradient(135deg, var(--mint), var(--sky)); }
+
+    /* ── TEAM ── */
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+    }
+
+    .team-card {
+      background: white;
+      border-radius: 24px;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+      transition: transform 0.2s, box-shadow 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .team-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 6px;
+    }
+    .team-card.ceo::before  { background: linear-gradient(90deg, var(--orange), var(--pink)); }
+    .team-card.cho::before  { background: linear-gradient(90deg, var(--pink), var(--purple)); }
+    .team-card.cfo::before  { background: linear-gradient(90deg, var(--mint), var(--sky)); }
+    .team-card.vibes::before{ background: linear-gradient(90deg, var(--yellow), var(--orange)); }
+
+    .team-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 36px rgba(0,0,0,0.12);
+    }
+
+    .team-avatar {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      margin: 0 auto 1rem;
+      object-fit: cover;
+      object-position: center center;
+      border: 4px solid #f0f0f0;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    }
+    .team-card.ceo  .team-avatar { border-color: #FFD0B0; }
+    .team-card.cho  .team-avatar { border-color: #FFB6D9; }
+    .team-card.cfo  .team-avatar { border-color: #A8EDD8; }
+    .team-card.vibes .team-avatar { border-color: #FFE580; }
+    /* .team-card.manav .team-avatar { object-position: center 30%; } */
+    .team-card.manav .team-avatar { object-position: 35% 20%; }
+    .team-card.antoine .team-avatar { object-position: 35% 37%; }
+    .team-card.jessica .team-avatar { object-position: center 30%; }
+
+    .team-name {
+      font-weight: 800;
+      font-size: 1rem;
+      color: #2d2d2d;
+      margin-bottom: 0.3rem;
+    }
+
+    .team-title {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.8rem;
+      border-radius: 50px;
+      display: inline-block;
+      margin-bottom: 0.4rem;
+    }
+    .team-card.ceo  .team-title { background: #FFE5D0; color: var(--orange); }
+    .team-card.cho  .team-title { background: #FFD6EC; color: var(--pink); }
+    .team-card.cfo  .team-title { background: #D0F5EC; color: #0d9e77; }
+    .team-card.vibes .team-title { background: #FFF5CC; color: #c8970a; }
+
+    .team-full-title {
+      font-size: 0.8rem;
+      color: #999;
+      font-style: italic;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 3rem 2rem;
+      background: #2d2d2d;
+      color: #aaa;
+      font-size: 0.9rem;
+    }
+    footer strong { color: white; }
+
+    /* ── DIVIDER ── */
+    .wave-divider {
+      line-height: 0;
+      overflow: hidden;
+    }
+    .wave-divider svg { display: block; width: 100%; }
+
+    @media (max-width: 640px) {
+      .team-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    /* ── SCROLL ANIMATION ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <div class="hero">
+    <span class="floating-emoji">🎾</span>
+    <span class="floating-emoji">🌞</span>
+    <span class="floating-emoji">🏐</span>
+    <span class="floating-emoji">🍦</span>
+    <span class="floating-emoji">🥏</span>
+    <span class="floating-emoji">🧋</span>
+    <span class="floating-emoji">💦</span>
+    <span class="floating-emoji">🌿</span>
+
+    <div class="hero-sticker">
+      <h1>Happy Club <span>:)</span></h1>
+    </div>
+    <div class="hero-glass">
+      <p class="hero-sub">Making sad students happy & happy students happier</p>
+    </div>
+    <p class="hero-detail">📍 Manzanita Field &nbsp;·&nbsp; Every Friday, 4 – 6 PM</p>
+    <a href="#about" class="cta-btn">Touch some grass 🌱</a>
+  </div>
+
+  <!-- WAVE -->
+  <div class="wave-divider">
+    <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <path d="M0,40 C360,80 1080,0 1440,40 L1440,0 L0,0 Z" fill="none"/>
+      <path d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z" fill="#FFF9F0"/>
+    </svg>
+  </div>
+
+  <!-- ABOUT / MOTIVATION -->
+  <section id="about">
+    <div class="motivation reveal">
+      <p class="section-label">Why we exist</p>
+      <h2>Grad students deserve to touch grass 🌿</h2>
+      <div class="quote-block">
+        "There's a running joke that grad students don't touch grass enough — so we created a space where they can do exactly that, quite literally."
+      </div>
+      <p>
+        Stanford can be intense. Between coursework, research, and the relentless pace of academic life,
+        it's easy to forget that the sun still shines over Manzanita Field every Friday afternoon.
+      </p>
+      <br/>
+      <p>
+        Happy Club is a recurring outdoor gathering built for graduate students who need to decompress,
+        connect with peers across programs, and rediscover the simple joy of unstructured play.
+        No agenda. No productivity goals. Just vibes, fresh air, and probably some boba.
+      </p>
+      <br/>
+      <p>
+        Our goal is modest but meaningful: to make campus life a little warmer, a little lighter,
+        and a whole lot more fun — one Friday at a time.
+      </p>
+    </div>
+  </section>
+
+
+  <!-- ACTIVITIES -->
+  <div class="activities-bg">
+    <section>
+      <p class="section-label reveal">What we do</p>
+      <h2 class="reveal">An afternoon of pure fun</h2>
+      <p class="reveal">No pressure, no agenda — just pick your favorite thing and go for it.</p>
+      <div class="activity-grid">
+        <div class="activity-card reveal"><div class="icon">🏐</div><div class="label">Volleyball</div></div>
+        <div class="activity-card reveal"><div class="icon">🏀</div><div class="label">Basketball</div></div>
+        <div class="activity-card reveal"><div class="icon">🥏</div><div class="label">Frisbee</div></div>
+        <div class="activity-card reveal"><div class="icon">💦</div><div class="label">Water Gun Fights</div></div>
+        <div class="activity-card reveal"><div class="icon">🍦</div><div class="label">Ice Cream Truck</div></div>
+        <div class="activity-card reveal"><div class="icon">🌮</div><div class="label">Taco Truck</div></div>
+        <div class="activity-card reveal"><div class="icon">🧋</div><div class="label">Boba</div></div>
+        <div class="activity-card reveal"><div class="icon">🤸</div><div class="label">Bounce House</div></div>
+      </div>
+    </section>
+  </div>
+
+  <!-- WHEN & WHERE -->
+  <section>
+    <p class="section-label reveal">Logistics</p>
+    <h2 class="reveal">When & Where</h2>
+    <div class="info-strip">
+      <div class="info-card time reveal">
+        <div class="info-icon">🕓</div>
+        <h3>Every Friday</h3>
+        <p>4:00 PM – 6:00 PM<br/>Weekly, during the academic year</p>
+      </div>
+      <div class="info-card place reveal">
+        <div class="info-icon">📍</div>
+        <h3>Manzanita Field</h3>
+        <p>Stanford University Campus<br/>Right where the grass is greenest</p>
+      </div>
+      <div class="info-card cost reveal">
+        <div class="info-icon">🎉</div>
+        <h3>Free & Open</h3>
+        <p>All graduate students welcome<br/>Bring friends, bring snacks, bring joy</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TEAM -->
+  <div style="background: white; padding: 0.1px 0;">
+    <section>
+      <p class="section-label reveal">The crew</p>
+      <h2 class="reveal">Meet the Dream Team</h2>
+      <div class="team-grid">
+
+        <div class="team-card ceo reveal">
+          <img class="team-avatar" src="anushree.png" alt="Anushree Aggarwal" />
+          <div class="team-name">Anushree Aggarwal</div>
+          <div class="team-title">CEO</div>
+          <div class="team-full-title">Chief Everything Officer</div>
+        </div>
+
+        <div class="team-card cho jessica reveal">
+          <img class="team-avatar" src="jess.png" alt="Jessica Chudnovsky" />
+          <div class="team-name">Jessica Chudnovsky</div>
+          <div class="team-title">CHO</div>
+          <div class="team-full-title">Chief Happiness Officer</div>
+        </div>
+
+        <div class="team-card cfo reveal">
+          <img class="team-avatar" src="salman.png" alt="Salman Abdullah" />
+          <div class="team-name">Salman Abdullah</div>
+          <div class="team-title">CFO</div>
+          <div class="team-full-title">Chief Food Officer</div>
+        </div>
+
+        <div class="team-card vibes reveal">
+          <img class="team-avatar" src="ismail.png" alt="Ismail Mardin" />
+          <div class="team-name">Ismail Mardin</div>
+          <div class="team-title">Vibes</div>
+          <div class="team-full-title">Vibes Strategist</div>
+        </div>
+
+        <div class="team-card vibes manav reveal">
+          <img class="team-avatar" src="manav.png" alt="Manav Shah" />
+          <div class="team-name">Manav Shah</div>
+          <div class="team-title">Vibes</div>
+          <div class="team-full-title">Vibes Strategist</div>
+        </div>
+
+        <div class="team-card vibes antoine reveal">
+          <img class="team-avatar" src="antoine.png" alt="Antoine Maechler" />
+          <div class="team-name">Antoine Maechler</div>
+          <div class="team-title">Vibes</div>
+          <div class="team-full-title">Vibes Strategist</div>
+        </div>
+
+      </div>
+    </section>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <p style="font-size:2rem; margin-bottom:0.5rem;">:)</p>
+    <p><strong>Stanford Happy Club</strong> · Manzanita Field · Fridays 4–6 PM</p>
+    <p style="margin-top:0.5rem;">Making sad students happy & happy students happier · Est. 2026</p>
+  </footer>
+
+  <script>
+    // Scroll reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Smooth scroll for CTA
+    document.querySelector('.cta-btn').addEventListener('click', (e) => {
+      e.preventDefault();
+      document.querySelector('#about').scrollIntoView({ behavior: 'smooth' });
+    });
+
+  </script>
+</body>
+</html>
